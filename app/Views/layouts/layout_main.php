@@ -13,13 +13,21 @@
 </head>
 <body>
     
-    <h1>Cá estou no layout 1</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center bg-dark text-light p-3">
+                <h3>PROJETO GERAL</h3>
+            </div>  
+        </div>
 
-    <?php $this->renderSection('conteudo') ?>
-    
-    <h1>Cá estou no layout 2</h1>
+        <div class="row mt-5 mb-5">
+            <div class="col-12">
+                <?php $this->renderSection('conteudo') ?>
+            </div>
+        </div>
+    </div>
 
-    
+
     <!-- javascript -->
     <script src="<?php echo base_url('assets/js/jquery-3.4.0.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/popper.min.js') ?>"></script>

@@ -1,7 +1,11 @@
 <?php 
-	$this->extend('layouts/layout_users')
+	$this->extend('layouts/layout_main')
 ?>
 <?php $this->section('conteudo') ?>
-<h1>Esta é a minha view users</h1>
+
+	<a href="<?php echo site_url('users') ?>" class="btn btn-primary btn-200">Users</a>
+
+
+
 <?php $this->endsection() ?>
     
