@@ -27,7 +27,6 @@ $pathsPath = FCPATH . '../app/Config/Paths.php';
 
 // Ensure the current directory is pointing to the front controller's directory
 chdir(__DIR__);
-
 // Load our paths config file
 require $pathsPath;
 $paths = new Config\Paths();
