@@ -6,12 +6,19 @@
 
     <div class="row mt-3 mb-3">
         <div class="col-4 offset-4 card bg-light">
+
+            <?php if(isset($error)): ?>
+                <div class="alert alert-danger text-center">
+                    <?php echo $error ?>
+                </div>
+            <?php endif; ?>            
+
             <form action="<?php echo site_url('users/login')?>" method="post">
                 <div class="form-group mt-3">
-                    <input type="text" name="text-username" class="form-control" placeholder="username">
+                    <input type="text" name="text_username" class="form-control" placeholder="username">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="text-password" class="form-control" placeholder="password">
+                    <input type="password" name="text_password" class="form-control" placeholder="password">
                 </div>
                 <div class="row">
                     <div class="form-group col-6">

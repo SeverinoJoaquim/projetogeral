@@ -25,8 +25,38 @@ class Users extends BaseController
 
 	//--------------------------------------------------------------------
 	public function login(){
+
+		/*
+		Verificar se houve submissão
+		se houve submissão:
+			-verificar se os campos estão preencidos
+			-perguntar à bd se existe username e password
+			-se existir: abrir sessão e envar para menu inicial
+			-se não existir: apresentar formulário de login com erro
+			*/
+			$error = '';
+			$data = array();
+			$request = \Config\Services::request();
+
+			if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+					//check fields
+					$username = $request->getPost('text_username');
+					$password = $request->getPost('text_password');
+					if($username == '' || $password == ''){
+						$error = "Erro no preenchimento dos campos!";
+					}
+
+					//check database
+					
+
+			}
+
+			if($error != ''){
+				$data['error'] = $error;
+			}
 		//Show the login page
-		echo view('users/login');
+		echo view('users/login', $data);
 	}
 	//--------------------------------------------------------------------
 	private function checkSession(){
