@@ -51,8 +51,17 @@ class Users extends BaseController
 					//check database
 					if($error == '' ){
 						$model = new UsersModel();
-						$model->teste();
+						$result = $model->verifyLogin($username, $password);
+						if($result){
+								//valid login
+								echo 'Ok';
+						}else{
+								//invalid login
+								echo 'Not Ok';
+						}
+						exit();
 					}
+
 
 			}
 

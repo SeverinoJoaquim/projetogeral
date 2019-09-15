@@ -5,16 +5,10 @@
 <?php $this->section('conteudo') ?>
 
     <div class="row mt-3 mb-3">
-        <div class="col-4 offset-4 card bg-light">
-
-            <?php if(isset($error)): ?>
-                <div class="alert alert-danger text-center">
-                    <?php echo $error ?>
-                </div>
-            <?php endif; ?>            
+        <div class="col-4 offset-4 card bg-light">            
 
             <form action="<?php echo site_url('users/login')?>" method="post">
-                <div class="form-group mt-3">
+                <div class="form-group mt-2">
                     <input type="text" name="text_username" class="form-control" placeholder="username">
                 </div>
                 <div class="form-group">
@@ -29,6 +23,11 @@
                     </div>
                 </div>
             </form>
+            <?php if(isset($error)): ?>
+                <div class="alert alert-danger text-center mt-2" id="error-message">
+                    <?php echo $error ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
