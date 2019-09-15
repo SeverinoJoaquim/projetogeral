@@ -1,5 +1,5 @@
 <?php 
-	$this->extend('layouts/layout_users')
+	$this->extend('layouts/layout_users');
 ?>
 
 <?php $this->section('conteudo') ?>

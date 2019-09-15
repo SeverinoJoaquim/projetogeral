@@ -122,4 +122,11 @@ class Users extends BaseController
 		//Check if session exists
 		return $this->session->has('id_user');
 	}
+
+		//==============================================================================
+		public function recover(){
+
+			//Shows form to recover password
+			echo view('users/recover_password');
+		}
 }

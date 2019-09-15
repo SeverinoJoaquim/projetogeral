@@ -26,6 +26,14 @@ class UsersModel extends Model
         if(count($results) == 0){
             return false;
         }else{
+
+            //Lançar data do último login no db
+            $params = array(
+                $results[0]['id_user']
+            );
+            $this->db->query("UPDATE users SET last_login = NOW() WHERE id_user = ?", $params);
+
+            //Retornos válidos
             return $results[0];
         }
     }
