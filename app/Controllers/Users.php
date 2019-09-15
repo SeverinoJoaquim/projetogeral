@@ -5,7 +5,7 @@ use App\Models\UsersModel;
 
 class Users extends BaseController
 {
-	private $session;
+	protected $session;
 
 	//===============================================================
 	public function __construct(){
@@ -52,17 +52,16 @@ class Users extends BaseController
 					if($error == '' ){
 						$model = new UsersModel();
 						$result = $model->verifyLogin($username, $password);
-						if($result){
+						if(is_array($result)){
 								//valid login
-								echo 'Ok';
+								$this->setSession($result);
+								$this->homePage();
+								return;
 						}else{
 								//invalid login
-								echo 'Not Ok';
+								$error = "Login inválido!";
 						}
-						exit();
 					}
-
-
 			}
 
 			if($error != ''){
@@ -71,7 +70,28 @@ class Users extends BaseController
 		//Show the login page
 		echo view('users/login', $data);
 	}
-	//--------------------------------------------------------------------
+
+	//==============================================================================
+	private function setSession($data){
+			//Init session
+
+			$session_data = array(
+					'id_user' => $data['id_user'],
+					'name' => $data['name']
+			);
+
+			$this->session->set($session_data);
+	}
+
+	//==============================================================================
+	public function homePage(){
+		echo 'Entrando na aolicação!';
+
+		echo '<pre>';
+		print_r($_SESSION);
+		echo '</pre>';
+	}
+	//==============================================================================
 	private function checkSession(){
 		//Check if session exists
 		return $this->session->has('id_user');
