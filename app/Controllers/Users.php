@@ -17,7 +17,7 @@ class Users extends BaseController
 		//Verifica se há uma sessão ativa
 		if($this->checkSession()){
 				//Active session
-
+				$this->homePage();
 		} else{
 				//Show login from
 				$this->login();
@@ -35,6 +35,14 @@ class Users extends BaseController
 			-se existir: abrir sessão e envar para menu inicial
 			-se não existir: apresentar formulário de login com erro
 			*/
+
+			//Verifica se há uma sessão ativa
+		if($this->checkSession()){
+			//Active session
+			$this->homePage();
+			return;
+		}
+
 			$error = '';
 			$data = array();
 			$request = \Config\Services::request();
@@ -85,12 +93,30 @@ class Users extends BaseController
 
 	//==============================================================================
 	public function homePage(){
-		echo 'Entrando na aolicação!';
+		if(!$this->checkSession()){
+			$this->login();
+			return;
+		}
 
-		echo '<pre>';
-		print_r($_SESSION);
-		echo '</pre>';
+		//echo 'Entrando na aplicação!';
+
+		//echo '<pre>';
+		//print_r($_SESSION);
+		//echo '</pre>';
+
+		//===== Show homePage view =================================
+		echo view('users/homepage');
+
 	}
+
+	//==============================================================================
+	public function logout(){
+			// logout
+
+			$this->session->destroy();
+			return redirect()->to(\site_url('users'));
+	}
+
 	//==============================================================================
 	private function checkSession(){
 		//Check if session exists
