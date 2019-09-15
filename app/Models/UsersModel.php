@@ -1,13 +1,19 @@
 <?php namespace App\Models;
 
-    use CodeIgniter\Database\ConnectionInterface;
+use CodeIgniter\Model;
 
-    class UserModel
+class UsersModel extends Model
+{
+    protected $db;
+
+    public function __construct()
     {
-        protected $db;
-
-        public function __construct(ConnectionInterface &$db)
-        {
-                $this->db =& $db;
-        }
+        $this->db = db_connect();
     }
+    
+    public function teste(){
+        $results = $this->db->query("SELECT * FROM users")->getResult('array');
+        echo $results[0]['username'] . ' - ' . $results[0]['passwrd'];
+        exit();
+    }
+}
