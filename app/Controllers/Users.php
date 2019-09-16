@@ -129,4 +129,23 @@ class Users extends BaseController
 			//Shows form to recover password
 			echo view('users/recover_password');
 		}
+		
+		//==============================================================================
+		public function reset_password(){
+
+			//reset users password
+			//redefines the password and sends by email
+			/*
+			1. Verifica se existe algum usuário com registro (email inserido)
+			2. Caso exista usuário, altera o seu password (random)
+			3. "Envia" uma mensagem com a nova password.
+			*/
+			$request = \Config\Services::request();
+			$email = $request->getPost('text_email');
+			
+			//Verificar se há um usuario com este email
+			$users = new UsersModel();
+			$users->resetPassword($email);
+		}
+
 }

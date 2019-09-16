@@ -7,8 +7,7 @@ class UsersModel extends Model
     protected $db;
 
     //===============================================
-    public function __construct()
-    {
+    public function __construct(){
         $this->db = db_connect();
     }
     //===================================================
@@ -37,4 +36,54 @@ class UsersModel extends Model
             return $results[0];
         }
     }
+    
+    //===================================================
+    public function resetPassword($email){
+
+        // Resets the users password
+
+        // Check if there is a user with the email
+        $params = array(
+            $email
+        );
+        $query = "SELECT id_user FROM users WHERE email = ?";
+        $results = $this->db->query($query,$params)->getResult('array');
+
+        if(count($results) != 0){
+            
+            //Existe o email
+
+            //Alterar a senha
+            $newPassword = $this->randomPassword();
+            $params = array(
+                md5(sha1($newPassword)),
+                $results[0]['id_user']
+            );
+            $query = "UPDATE users SET passwrd = ? WHERE id_user = ?";
+            $this->db->query($query,$params);
+
+            //Show the new password
+            echo '(Mensagem de elmail)';
+            echo 'A sua nova senha é: ' . $newPassword;
+
+            //VDP5Ydhk
+
+            return true;
+        }else{
+            //Não existe
+            echo 'Não existe este email registrado!';
+            return false;
+        }
+    }
+
+    //===================================================
+    private function randomPassword(){
+        //Gerar uma senha randônica
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        return substr(str_shuffle($chars),0,8);
+    }
+    
+
+
+
 }
