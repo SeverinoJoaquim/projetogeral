@@ -132,20 +132,50 @@ class Users extends BaseController
 		
 		//==============================================================================
 		public function reset_password(){
-
-			//reset users password
-			//redefines the password and sends by email
+//Método 1 ==========================================
 			/*
 			1. Verifica se existe algum usuário com registro (email inserido)
 			2. Caso exista usuário, altera o seu password (random)
 			3. "Envia" uma mensagem com a nova password.
 			*/
+
+			////reset users password
+			////redefines the password and sends by email
+			//$request = \Config\Services::request();
+			//$email = $request->getPost('text_email');
+			
+			////Verificar se há um usuario com este email
+			////If exists, change the password and send email
+			//$users = new UsersModel();
+			//$users->resetPassword($email);
+
+//Método 2 ==========================================
+			/*
+			1- Apresenta o formulário para o email
+			2- Vai verificar se o email está associado a uma conta
+			3- Caso esteja associado, cria um purl e envia email com o purl
+			4- O link do purl permite aceder a uma área reservada para redefinir nova password
+			
+			*/
+
 			$request = \Config\Services::request();
 			$email = $request->getPost('text_email');
-			
-			//Verificar se há um usuario com este email
 			$users = new UsersModel();
-			$users->resetPassword($email);
-		}
+			$result = $users->checkEmail($email);
+			if(count($result) != 0){
+				//Existe o email associado
+				$users->sendPurl($email, $result[0]['id_user']);
 
+				echo 'Existe o email!';
+			}else{
+				//Não existe email
+				echo 'Não existe email associado!';
+			}
+		}
+		
+		//==============================================================================
+		public function redefine_password($purl){
+				echo 'Ola!';
+				echo "<p>$purl</p>";
+		}
 }

@@ -66,7 +66,6 @@ class UsersModel extends Model
             echo '(Mensagem de elmail)';
             echo 'A sua nova senha é: ' . $newPassword;
 
-            //VDP5Ydhk
 
             return true;
         }else{
@@ -76,14 +75,41 @@ class UsersModel extends Model
         }
     }
 
+        //===================================================
+        public function checkEmail($email){
+            //Verifica se o emailexiste
+            $params = array(
+                $email
+            );
+            $query = "SELECT id_user FROM users WHERE email = ?";
+            return $this->db->query($query,$params)->getResult('array');            
+        }
+    
+        //===================================================
+        public function sendPurl($email, $id_user){
+
+            /*
+            1. Gerar um código purl e salvar no bd
+            2. Enviar uma mensagem com o link do purl
+            */
+            $purl = $this->randomPassword(6);
+            $params = array(
+                $purl,
+                $id_user
+            );
+            $query = "UPDATE users SET purl = ? WHERE id_user = ?";
+            $this->db->query($query,$params);
+
+            //Envio do email
+            echo '(Mensagem de email) Link para redefinir a sua password: ';
+            echo '<a href="'.site_url('users/redefine_password/' . $purl).'">Redefinir password</a>';
+        }
+
     //===================================================
-    private function randomPassword(){
+    private function randomPassword($numChars = 8){
         //Gerar uma senha randônica
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        return substr(str_shuffle($chars),0,8);
+        return substr(str_shuffle($chars),0,$numChars);
     }
-    
-
-
 
 }
