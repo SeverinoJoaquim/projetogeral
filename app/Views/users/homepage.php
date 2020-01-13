@@ -4,7 +4,9 @@ $s = session();
 ?>
 <?php $this->section('conteudo') ?>
 
-<div>Olá, <?php echo $s->name . '. ' . 'Seu Identificador é: ' . ' (' . $s->id_user . ')' ?></div>
+<?php echo view('users/userbar') ?>
+
+<div>Olá, <?php echo $s->name . '.' ?></div>
 
 <div>O meu perfil é de: <?php echo $s->profile ?></div>
 
