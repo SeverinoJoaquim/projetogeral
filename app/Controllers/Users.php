@@ -106,22 +106,14 @@ class Users extends BaseController
 			return;
 		}
 
-		//Vefificar profile/perfil
+		//Verificar se o usuário é administrador -admin-
+		$data = array();
 		if ($this->checkProfile('admin')) {
-			echo "Sou Administrador!";
-		} else {
-			echo "Não sou Administrador!";
+			$data['admin'] = true;
 		}
-		exit();
-
-		//echo 'Entrando na aplicação!';
-
-		//echo '<pre>';
-		//print_r($_SESSION);
-		//echo '</pre>';
 
 		//===== Show homePage view =================================
-		echo view('users/homepage');
+		echo view('users/homepage', $data);
 	}
 
 	//==============================================================================
@@ -220,5 +212,28 @@ class Users extends BaseController
 		} else {
 			return false;
 		}
+	}
+
+	//Aula 31 --------------------
+	//====================================================
+	public function op1()
+	{
+		echo 'op1';
+	}
+
+	//====================================================
+	public function op2()
+	{
+		echo 'op2';
+	}
+
+	//====================================================
+	public function admin_users()
+	{
+		//Verificar se o usuário tem permissão
+		if ($this->checkProfile('admin') == false) {
+			return redirect()->to(site_url('users'));
+		}
+		echo 'Administração de utilizadores';
 	}
 }
