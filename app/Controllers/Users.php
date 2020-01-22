@@ -278,6 +278,18 @@ class Users extends BaseController
 		if ($this->checkProfile('admin') == false) {
 			return redirect()->to(site_url('users'));
 		}
-		echo 'Administração de utilizadores';
+
+		//Buscar a lista de utilizaodres registrados
+		$users = new UsersModel();
+		$results = $users->getUsers();
+		$data['users'] = $results;
+
+
+
+		//Passar essa informação par uma view que vais apresentar uma tabela com os users
+		//Terá um botão para add users
+		//Em cada row da tabela haverá os dados principais de cada user
+		//e as funções para editar e deletar user
+		echo view('users/admin_users', $data);
 	}
 }

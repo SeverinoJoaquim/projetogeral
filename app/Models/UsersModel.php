@@ -142,7 +142,15 @@ class UsersModel extends Model
         );
         $this->db->query("UPDATE users SET purl = '' WHERE id_user = ?", $params);
     }
+    //-----Aula 28 - https://github.com/sys4soft/projetogeral
 
+    //===================================================
+    public function getUsers()
+    {
+        //Return all users
+        $query = "SELECT * FROM users";
+        return $this->db->query($query)->getResult('array');
+    }
     //===================================================
     private function randomPassword($numChars = 8)
     {
