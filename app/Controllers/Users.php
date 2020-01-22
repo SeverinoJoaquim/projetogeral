@@ -153,13 +153,12 @@ class Users extends BaseController
 		//$users = new UsersModel();
 		//$users->resetPassword($email);
 
-		//Método 2 ==========================================
+		//Método 2 - Aula 26 ==========================================
 		/*
 			1- Apresenta o formulário para o email
 			2- Vai verificar se o email está associado a uma conta
 			3- Caso esteja associado, cria um purl e envia email com o purl
-			4- O link do purl permite aceder a uma área reservada para redefinir nova password
-			
+			4- O link do purl permite aceder a uma área reservada para redefinir nova password			
 			*/
 
 		$request = \Config\Services::request();
@@ -180,8 +179,53 @@ class Users extends BaseController
 	//==============================================================================
 	public function redefine_password($purl)
 	{
-		echo 'Ola!';
-		echo "<p>$purl</p>";
+		/*
+		-------Aula 27----
+		1 - Verificar se veio o purl/se existe um purl na bd
+		2 - Se existir, vamos apresentar o formulário para alterar a password
+			2.1 - Formulário terá 2 inputs
+				2.1.1 - novo password
+				2.1.2 - repetir nova password
+			2.2 - tratamento da submissão
+			2.3 - password iguais
+				2.3.1 - guardar na bd
+				2.3.2 - vai eliminar o purl
+		3 - Não existindo o purl, vai à página inicial
+		*/
+		$users = new UsersModel();
+		$results = $users->getPurl($purl);
+		if (count($results) == 0) {
+
+			//No purl found. Redirects to main 
+			return redirect()->to(site_url('main'));
+		} else {
+
+			$data['user'] = $results[0];
+			echo view('users/redefine_password', $data);
+		}
+	}
+
+	//----------------Aula 27-------------------------------------
+	public function redefine_password_submit()
+	{
+		$request = \config\Services::request();
+		$id_user = $request->getPost('text_id_user');
+		$nova_password = $request->getPost('text_nova_password');
+		$nova_password_repetida = $request->getPost('text_repetir_password');
+
+		$error = '';
+
+		//Verificar se a senha e a conformação são iguais
+		if ($nova_password != $nova_password_repetida) {
+			$error = 'As passwords são diferentes!';
+			die($error);
+		}
+
+		//Updates the new password
+		if ($error == '') {
+			$users = new UsersModel();
+			$users->redefinePassword($id_user, $nova_password);
+		}
 	}
 
 	public function teste($value)

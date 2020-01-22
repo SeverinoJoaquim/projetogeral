@@ -1,4 +1,6 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use CodeIgniter\Model;
 
@@ -7,12 +9,14 @@ class UsersModel extends Model
     protected $db;
 
     //===============================================
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = db_connect();
     }
     //===================================================
 
-    public function verifyLogin($username, $password){
+    public function verifyLogin($username, $password)
+    {
 
         $params = array(
             $username,
@@ -20,11 +24,11 @@ class UsersModel extends Model
         );
 
         $query = "SELECT * FROM users WHERE username = ? AND passwrd = ?";
-        $results = $this->db->query($query,$params)->getResult('array');
-        
-        if(count($results) == 0){
+        $results = $this->db->query($query, $params)->getResult('array');
+
+        if (count($results) == 0) {
             return false;
-        }else{
+        } else {
 
             //Lançar data do último login no db
             $params = array(
@@ -36,9 +40,10 @@ class UsersModel extends Model
             return $results[0];
         }
     }
-    
+
     //===================================================
-    public function resetPassword($email){
+    public function resetPassword($email)
+    {
 
         // Resets the users password
 
@@ -47,10 +52,10 @@ class UsersModel extends Model
             $email
         );
         $query = "SELECT id_user FROM users WHERE email = ?";
-        $results = $this->db->query($query,$params)->getResult('array');
+        $results = $this->db->query($query, $params)->getResult('array');
 
-        if(count($results) != 0){
-            
+        if (count($results) != 0) {
+
             //Existe o email
 
             //Alterar a senha
@@ -60,7 +65,7 @@ class UsersModel extends Model
                 $results[0]['id_user']
             );
             $query = "UPDATE users SET passwrd = ? WHERE id_user = ?";
-            $this->db->query($query,$params);
+            $this->db->query($query, $params);
 
             //Show the new password
             echo '(Mensagem de elmail)';
@@ -68,48 +73,81 @@ class UsersModel extends Model
 
 
             return true;
-        }else{
+        } else {
             //Não existe
             echo 'Não existe este email registrado!';
             return false;
         }
     }
 
-        //===================================================
-        public function checkEmail($email){
-            //Verifica se o emailexiste
-            $params = array(
-                $email
-            );
-            $query = "SELECT id_user FROM users WHERE email = ?";
-            return $this->db->query($query,$params)->getResult('array');            
-        }
-    
-        //===================================================
-        public function sendPurl($email, $id_user){
+    //===================================================
+    public function checkEmail($email)
+    {
+        //Verifica se o emailexiste
+        $params = array(
+            $email
+        );
+        $query = "SELECT id_user FROM users WHERE email = ?";
+        return $this->db->query($query, $params)->getResult('array');
+    }
 
-            /*
+    //===================================================
+    public function sendPurl($email, $id_user)
+    {
+
+        /*
             1. Gerar um código purl e salvar no bd
             2. Enviar uma mensagem com o link do purl
             */
-            $purl = $this->randomPassword(6);
-            $params = array(
-                $purl,
-                $id_user
-            );
-            $query = "UPDATE users SET purl = ? WHERE id_user = ?";
-            $this->db->query($query,$params);
+        $purl = $this->randomPassword(6);
+        $params = array(
+            $purl,
+            $id_user
+        );
+        $query = "UPDATE users SET purl = ? WHERE id_user = ?";
+        $this->db->query($query, $params);
 
-            //Envio do email
-            echo '(Mensagem de email) Link para redefinir a sua password: ';
-            echo '<a href="'.site_url('users/redefine_password/' . $purl).'">Redefinir password</a>';
-        }
-
-    //===================================================
-    private function randomPassword($numChars = 8){
-        //Gerar uma senha randônica
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        return substr(str_shuffle($chars),0,$numChars);
+        //Envio do email
+        echo '(Mensagem de email) Link para redefinir a sua password: ';
+        echo '<a href="' . site_url('users/redefine_password/' . $purl) . '">Redefinir password</a>';
     }
 
+    //===================================================
+    public function getPurl($purl)
+    {
+
+        //return the row with a given purl
+        $params = array(
+            $purl
+        );
+
+        $query = "SELECT id_user FROM users WHERE purl = ?";
+        return $this->db->query($query, $params)->getResult('array');
+    }
+
+    //=================Aula 27==================================
+    public function redefinePassword($id, $pass)
+    {
+        //Update the user's password
+        $params = array(
+            md5(sha1($pass)),
+            $id
+        );
+        $query = "UPDATE users SET passwrd = ? WHERE id_user = ?";
+        $this->db->query($query, $params);
+
+        //Removes the purl from the user
+        $params = array(
+            $id
+        );
+        $this->db->query("UPDATE users SET purl = '' WHERE id_user = ?", $params);
+    }
+
+    //===================================================
+    private function randomPassword($numChars = 8)
+    {
+        //Gerar uma senha randônica
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        return substr(str_shuffle($chars), 0, $numChars);
+    }
 }
