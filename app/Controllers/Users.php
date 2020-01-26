@@ -283,13 +283,29 @@ class Users extends BaseController
 		$users = new UsersModel();
 		$results = $users->getUsers();
 		$data['users'] = $results;
-
-
-
-		//Passar essa informação par uma view que vais apresentar uma tabela com os users
-		//Terá um botão para add users
-		//Em cada row da tabela haverá os dados principais de cada user
-		//e as funções para editar e deletar user
 		echo view('users/admin_users', $data);
+	}
+
+	//========== Formulário para novo utilizador ==========================================
+	public function admin_new_user()
+	{
+
+		//Adicionar novo usuário na base de dados
+		$error = '';
+		$data = array();
+		$request = \config\Services::request();
+
+		//Verificar submissão
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			//Redifecionar para tabela de utilizadores
+		}
+
+		//Checar se há erro
+		if ($error != '') {
+			$data['error'] = $error;
+		}
+
+		echo view('users/admin_new_user', $data);
 	}
 }
