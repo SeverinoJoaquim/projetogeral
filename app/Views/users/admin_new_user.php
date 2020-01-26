@@ -14,10 +14,14 @@ $s = session();
 <!-- Formulário para novo utilizador -->
 <form action="">
   <h2>Adicionar novo usuário</h2>
-  <p><input type="text" name="text_username"></p>
-  <p><input type="text" name="text_password"></p>
-  <p><input type="text" name="text_name"></p>
-  <p><input type="email" name="text_email"></p>
+  <p><input type="text" name="text_username" placeholder="Username" required></p>
+  <p><input type="text" name="text_password" placeholder="Password" required></p>
+  <p><input type="text" name="text_password_repetir" placeholder="Repetir password" required></p>
+
+  <button id="btn-password" class="btn btn-primary btn-sm" type="button">Gerar password</button>
+
+  <p><input type="text" name="text_name" placeholder="Name" required></p>
+  <p><input type="email" name="text_email" placeholder="E-mail" required></p>
 
   <!-- Profile -->
   <p>Profile</p>
